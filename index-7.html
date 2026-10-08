@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>НейроАрт-Лаборатория — человек и ИИ</title>
+<style>
+:root{
+  --bg:#f5f2eb; --card:#fffdf8; --ink:#202124; --muted:#68645c;
+  --accent:#6c4cc8; --accent2:#e58b55; --line:#ddd6ca; --soft:#eee9ff;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
+header{background:#181719;color:white;padding:52px 7% 44px;position:relative;overflow:hidden}
+header:after{content:"";position:absolute;width:420px;height:420px;border-radius:50%;right:-100px;top:-220px;background:#6c4cc8;opacity:.35}
+header h1{max-width:900px;font-size:clamp(30px,5vw,58px);line-height:1.03;margin:0 0 18px;position:relative;z-index:1}
+header p{max-width:760px;color:#ddd9e3;font-size:18px;position:relative;z-index:1}
+.badge{display:inline-block;padding:7px 12px;border:1px solid #6f6879;border-radius:999px;font-size:13px;margin-bottom:16px;position:relative;z-index:1}
+nav{position:sticky;top:0;z-index:10;background:#fffdf8;border-bottom:1px solid var(--line);display:flex;gap:6px;overflow:auto;padding:8px 5%}
+nav button{border:0;background:transparent;padding:10px 13px;border-radius:9px;white-space:nowrap;cursor:pointer;font-weight:700;color:#514d46}
+nav button:hover,nav button.active{background:var(--soft);color:var(--accent)}
+main{max-width:1180px;margin:auto;padding:32px 5% 80px}
+section{margin:0 0 42px;scroll-margin-top:75px}
+h2{font-size:30px;margin:0 0 8px}
+h3{margin-top:0}
+.lead{color:var(--muted);max-width:850px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 5px 18px #3b2c1408}
+.stat{font-size:34px;font-weight:800;color:var(--accent)}
+.small{font-size:13px;color:var(--muted)}
+.painting{overflow:hidden;padding:0}
+.painting img{width:100%;height:230px;object-fit:cover;display:block;background:#ddd}
+.painting .inside{padding:17px}
+.tag{display:inline-block;background:#eee9ff;color:#5137a3;border-radius:999px;padding:4px 9px;font-size:12px;margin:3px 3px 3px 0}
+textarea,input,select{width:100%;padding:12px;border:1px solid #cfc7ba;border-radius:10px;background:#fff;font:inherit}
+textarea{min-height:145px;resize:vertical}
+label{display:block;font-weight:700;margin:13px 0 6px}
+.btn{border:0;background:var(--accent);color:white;padding:11px 16px;border-radius:10px;font-weight:800;cursor:pointer}
+.btn.secondary{background:#ebe6dc;color:#332f29}
+.btn.orange{background:var(--accent2)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.result{margin-top:14px;padding:15px;border-radius:12px;background:#f0edf9;border-left:4px solid var(--accent)}
+.bar{height:12px;background:#e5dfd5;border-radius:99px;overflow:hidden;margin:7px 0 14px}
+.bar span{display:block;height:100%;background:var(--accent);border-radius:99px}
+table{width:100%;border-collapse:collapse;background:var(--card);border-radius:15px;overflow:hidden}
+th,td{padding:11px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:#eee9ff}
+.hidden{display:none}
+footer{padding:30px 7%;background:#1b191c;color:#d8d3dc;font-size:13px}
+.kicker{font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.callout{border:1px solid #d8ccff;background:#f1edff;padding:20px;border-radius:16px}
+@media(max-width:650px){header{padding:38px 6%}main{padding-left:4%;padding-right:4%}.painting img{height:190px}}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="badge">ИНДИВИДУАЛЬНЫЙ КОНЕЧНЫЙ ПРОДУКТ НАУЧНОГО ПРОЕКТА</span>
+  <h1>НейроАрт-Лаборатория</h1>
+  <p>Интерактивное исследование лексики: как человек и искусственный интеллект описывают одну и ту же картину — и где в тексте проявляется разница.</p>
+</header>
+
+<nav id="nav">
+  <button data-target="about">О проекте</button>
+  <button data-target="corpus">Корпус</button>
+  <button data-target="compare">Сравнение</button>
+  <button data-target="blind">Слепой тест</button>
+  <button data-target="analyzer">Анализатор</button>
+  <button data-target="method">Методика</button>
+</nav>
+
+<main>
+
+<section id="about">
+  <div class="kicker">01 / Идея продукта</div>
+  <h2>Не просто сайт о картинах, а мини-лаборатория</h2>
+  <p class="lead">Пользователь выбирает произведение, читает два описания, сравнивает их и может самостоятельно проанализировать текст. В продукт встроены элементы исследования: корпус, количественные показатели, слепой тест и форма для собственного материала.</p>
+  <div class="grid">
+    <div class="card"><div class="stat">2</div><b>типа текста</b><p class="small">описание человека и описание, сгенерированное ИИ.</p></div>
+    <div class="card"><div class="stat">6</div><b>произведений</b><p class="small">единый набор картин для сопоставления.</p></div>
+    <div class="card"><div class="stat">4</div><b>лексические зоны</b><p class="small">объекты/факты, цвет, эмоции, контекст.</p></div>
+    <div class="card"><div class="stat">1</div><b>исследовательский вопрос</b><p class="small">что меняется в языке описания при смене автора?</p></div>
+  </div>
+  <div class="callout" style="margin-top:18px">
+    <b>Гипотеза:</b> человек чаще выходит за пределы визуально фиксируемых признаков и добавляет эмоциональную оценку, ассоциации и контекст; ИИ чаще строит описание вокруг наблюдаемых объектов, цвета, композиции и признаков изображения.
+  </div>
+</section>
+
+<section id="corpus">
+  <div class="kicker">02 / Исследовательский корпус</div>
+  <h2>Картины для эксперимента</h2>
+  <p class="lead">Демонстрационный корпус. Для защиты проекта его можно расширить реальными ответами участников и повторными генерациями ИИ.</p>
+  <div class="grid" id="paintings"></div>
+</section>
+
+<section id="compare">
+  <div class="kicker">03 / Сравнительный анализ</div>
+  <h2>Что замечает человек и что фиксирует ИИ?</h2>
+  <p class="lead">Выберите картину. Ниже показана демонстрационная пара текстов и автоматически рассчитанный профиль по заранее заданным лексическим категориям.</p>
+  <select id="paintingSelect" onchange="renderCompare()"></select>
+  <div id="compareBox" style="margin-top:18px"></div>
+</section>
+
+<section id="blind">
+  <div class="kicker">04 / Мини-эксперимент</div>
+  <h2>Слепой тест: угадайте автора описания</h2>
+  <p class="lead">Текст показывается без маркировки «человек» или «ИИ». После ответа открывается правильный вариант и объяснение.</p>
+  <div class="card">
+    <div id="blindText" style="font-size:18px"></div>
+    <div class="actions">
+      <button class="btn" onclick="guess('human')">Это человек</button>
+      <button class="btn orange" onclick="guess('ai')">Это ИИ</button>
+      <button class="btn secondary" onclick="newBlind()">Другой пример</button>
+    </div>
+    <div id="blindResult"></div>
+  </div>
+</section>
+
+<section id="analyzer">
+  <div class="kicker">05 / Собственный материал</div>
+  <h2>Лексический анализатор</h2>
+  <p class="lead">Вставьте собственное описание картины. Инструмент подсчитает слова из нескольких исследовательских категорий. Это не «детектор ИИ», а вспомогательный инструмент для анализа текста.</p>
+  <label for="userText">Ваш текст</label>
+  <textarea id="userText" placeholder="Например: На картине изображены две фигуры..."></textarea>
+  <div class="actions"><button class="btn" onclick="analyzeText()">Проанализировать</button><button class="btn secondary" onclick="document.getElementById('userText').value='';document.getElementById('analysisResult').innerHTML=''">Очистить</button></div>
+  <div id="analysisResult"></div>
+</section>
+
+<section id="method">
+  <div class="kicker">06 / Научная часть</div>
+  <h2>Как продукт связан с исследованием</h2>
+  <div class="grid">
+    <div class="card"><h3>1. Единый стимул</h3><p>Одна и та же картина предъявляется разным авторам текста.</p></div>
+    <div class="card"><h3>2. Сбор корпуса</h3><p>Фиксируются человеческие описания и ответы ИИ при одинаковом или максимально близком задании.</p></div>
+    <div class="card"><h3>3. Разметка</h3><p>Слова распределяются по категориям: предметность, цвет, эмоции, оценка, контекст.</p></div>
+    <div class="card"><h3>4. Подсчёт</h3><p>Сравнивается частота категорий, а также соотношение глаголов и прилагательных.</p></div>
+    <div class="card"><h3>5. Интерпретация</h3><p>Выявляются не «лучший» и «хуже», а различия в языковой стратегии описания.</p></div>
+    <div class="card"><h3>6. Проверка</h3><p>Слепой тест показывает, действительно ли различия заметны человеку без маркировки автора.</p></div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h3>Показатели, которые можно вынести в научную работу</h3>
+    <table>
+      <tr><th>Показатель</th><th>Что показывает</th></tr>
+      <tr><td>Доля прилагательных</td><td>Насколько описание ориентировано на признаки и характеристики объектов.</td></tr>
+      <tr><td>Доля глаголов</td><td>Насколько текст передаёт действие, динамику и процесс.</td></tr>
+      <tr><td>Эмоциональная лексика</td><td>Наличие слов, выражающих чувства, состояние и субъективную оценку.</td></tr>
+      <tr><td>Контекстная лексика</td><td>Исторические, культурные и сюжетные интерпретации.</td></tr>
+      <tr><td>Цветовая лексика</td><td>Частота прямых обозначений цвета и оттенков.</td></tr>
+    </table>
+  </div>
+  <div class="callout" style="margin-top:18px"><b>Важно для защиты:</b> демонстрационные цифры на сайте не должны выдаваться за результаты реального эксперимента. В исследовательской версии их следует заменить на результаты вашего корпуса и указать количество текстов, участников и генераций ИИ.</div>
+</section>
+
+</main>
+
+<footer>
+  <b>«НейроАрт-Лаборатория»</b><br>
+  Индивидуальный цифровой продукт к исследованию «Нейросеть-искусствовед: сравнительный анализ лексического состава описаний картин человеком и ИИ».
+</footer>
+
+<script>
+const data = [
+{
+ id:1,title:"Василий Кандинский — «Фиолетовый клин»", year:"абстрактное искусство",
+ img:"https://commons.wikimedia.org/wiki/Special:FilePath/Vassily_Kandinsky%2C_1912_-_Improvisation_31_%28Sea_Battle%29.jpg",
+ human:"Картина воспринимается не столько как изображение конкретного предмета, сколько как напряжённое движение цвета и формы. Фиолетовые и тёмные участки создают тревожное настроение, а резкие линии напоминают о столкновении и внутреннем конфликте. Здесь легко увидеть не событие, а эмоциональное состояние.",
+ ai:"На картине представлены абстрактные формы, линии и цветовые пятна. В композиции преобладают фиолетовые, тёмные и контрастные оттенки. Геометрические и свободные элементы распределены по поверхности полотна и создают ощущение динамики и движения.",
+ humanTags:["тревога","конфликт","эмоциональное состояние","ассоциация"],
+ aiTags:["форма","линия","цвет","композиция"]
+},
+{
+ id:2,title:"Такасси Мураками — «Цветы Мураками»", year:"современное искусство",
+ img:"https://commons.wikimedia.org/wiki/Special:FilePath/Takashi_Murakami_-_Flower_Matango.jpg",
+ human:"Яркие цветы выглядят почти слишком счастливыми, но из-за одинаковых улыбок в них появляется что-то странное. Они похожи на персонажей, которые постоянно должны изображать хорошее настроение. За простым и красочным образом можно почувствовать игру с массовой культурой.",
+ ai:"Изображены многочисленные цветочные формы с округлыми лепестками и улыбающимися лицами. Использована яркая цветовая палитра. Повторяющийся мотив создаёт ритмичную композицию и визуально напоминает декоративную графику и элементы поп-культуры.",
+ humanTags:["странность","счастье","игра","массовая культура"],
+ aiTags:["цветочные формы","повтор","ритм","поп-культура"]
+},
+{
+ id:3,title:"Владимир Маковский — «Варят варенье»", year:"реализм",
+ img:"https://commons.wikimedia.org/wiki/Special:FilePath/Vladimir_Makovsky_-_In_the_Garden.jpg",
+ human:"Сцена напоминает обычный домашний день. В ней есть ощущение спокойствия и привычной работы, поэтому картина воспринимается очень живой. За бытовым занятием можно представить людей, их отношения и атмосферу дома.",
+ ai:"На картине изображена бытовая сцена с людьми, занятыми приготовлением варенья. В композиции присутствуют предметы домашнего обихода, посуда и детали интерьера. Персонажи взаимодействуют между собой, а сюжет построен вокруг повседневного занятия.",
+ humanTags:["спокойствие","дом","отношения","атмосфера"],
+ aiTags:["бытовая сцена","посуда","интерьер","персонажи"]
+},
+{
+ id:4,title:"Джон Уильям Уотерхаус — «Джульетта»", year:"живопись XIX века",
+ img:"https://commons.wikimedia.org/wiki/Special:FilePath/John_William_Waterhouse_-_Juliet.jpg",
+ human:"В образе девушки чувствуется ожидание и одиночество. Она кажется погружённой в свои мысли, и поэтому портрет воспринимается как история о чувствах, а не просто изображение человека. Тёплая палитра усиливает впечатление тихой меланхолии.",
+ ai:"На картине изображена молодая женщина в интерьере. Она представлена в профиль и одета в исторический костюм. Использованы тёплые коричневые и золотистые оттенки. Детали одежды и помещения создают атмосферу исторической сцены.",
+ humanTags:["ожидание","одиночество","мысли","меланхолия"],
+ aiTags:["женщина","профиль","костюм","тёплая палитра"]
+},
+{
+ id:5,title:"Пьер-Огюст Ренуар — «Влюблённые»", year:"импрессионизм",
+ img:"https://commons.wikimedia.org/wiki/Special:FilePath/Pierre-Auguste_Renoir_-_In_the_Meadow.jpg",
+ human:"В этой сцене ощущается близость двух людей и почти случайный счастливый момент. Свет делает картину мягкой, а фигуры кажутся частью окружающей природы. Главное здесь — не точность деталей, а ощущение тёплого воспоминания.",
+ ai:"На картине представлены две фигуры, расположенные в природном окружении. Художник использует мягкие цветовые переходы и светлую палитру. Свободные мазки и размытые контуры характерны для импрессионистической манеры.",
+ humanTags:["близость","счастье","воспоминание","тепло"],
+ aiTags:["две фигуры","природа","свет","мазки"]
+},
+{
+ id:6,title:"Дэвид Хокни — «Две фигуры в бассейне»", year:"современное искусство",
+ img:"https://commons.wikimedia.org/wiki/Special:FilePath/David_Hockney_-_A_Bigger_Splash.jpg",
+ human:"Сцена кажется спокойной только на первый взгляд. Отсутствие человека в бассейне заставляет задуматься, кто только что был здесь и почему его уже нет. Яркий пейзаж поэтому приобретает ощущение загадки и одиночества.",
+ ai:"На изображении показан бассейн в окружении архитектуры и растительности. Композиция построена на сочетании голубой воды, светлых поверхностей и зелёных элементов. Видны признаки современной живописи с упрощёнными формами и чёткими цветовыми областями.",
+ humanTags:["загадка","одиночество","ожидание","вопрос"],
+ aiTags:["бассейн","архитектура","вода","цветовые области"]
+}
+];
+
+const lex = {
+ emotion:["тревога","радость","счастье","странность","спокойствие","одиночество","меланхолия","тепло","волнение","страх","любовь","грусть","ожидание","настроение","чувство","эмоция","воспоминание","близость"],
+ color:["красн","син","голуб","фиолет","жёлт","желт","зелён","зелен","коричнев","золот","оранж","розов","чёрн","черн","бел","светл","тёмн","темн"],
+ context:["истор","культур","массов","поп-культур","быт","дом","отношен","сюжет","импрессиониз","искусств","эпох","персонаж","воспомин"],
+ object:["картина","фигура","человек","женщина","мужчина","цвет","форма","линия","предмет","посуда","интерьер","бассейн","вода","природа","архитектура","композиция","лепест","мазк","одежд","костюм"]
+};
+
+function esc(s){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
+
+function makeCards(){
+ const box=document.getElementById('paintings');
+ box.innerHTML=data.map(p=>`<div class="card painting">
+   <img src="${p.img}" alt="${esc(p.title)}" onerror="this.style.display='none'">
+   <div class="inside"><h3>${p.title}</h3><span class="tag">${p.year}</span>
+   <p class="small">Сравнивается один визуальный стимул и две языковые стратегии.</p></div>
+ </div>`).join('');
+}
+function setupSelect(){
+ const s=document.getElementById('paintingSelect');
+ s.innerHTML=data.map(p=>`<option value="${p.id}">${p.title}</option>`).join('');
+ renderCompare();
+}
+function countWords(t){return (t.toLowerCase().match(/[а-яёa-z-]+/g)||[]);}
+function countCat(words,arr){
+ return words.filter(w=>arr.some(x=>w.includes(x))).length;
+}
+function profile(text){
+ const words=countWords(text), total=words.length||1;
+ const adjectives=words.filter(w=>/(ый|ий|ой|ая|яя|ое|ее|ые|ие|ого|его|ыми|ими)$/.test(w)).length;
+ const verbs=words.filter(w=>/(ть|ться|ет|ют|ит|ат|ят|ил|ила|или|ило|ают|яют|уют)$/.test(w)).length;
+ return {
+  total, adjectives, verbs,
+  emotion:countCat(words,lex.emotion),
+  color:countCat(words,lex.color),
+  context:countCat(words,lex.context),
+  object:countCat(words,lex.object)
+ };
+}
+function bar(name,a,b){
+ const max=Math.max(a,b,1);
+ return `<div><b>${name}</b><div class="bar"><span style="width:${a/max*100}%"></span></div><div class="small">человек: ${a} · ИИ: ${b}</div></div>`;
+}
+function renderCompare(){
+ const p=data.find(x=>x.id==document.getElementById('paintingSelect').value)||data[0];
+ const h=profile(p.human), a=profile(p.ai);
+ document.getElementById('compareBox').innerHTML=`
+ <div class="grid">
+  <div class="card"><h3>Человек</h3><p>${p.human}</p>${p.humanTags.map(x=>`<span class="tag">${x}</span>`).join('')}</div>
+  <div class="card"><h3>ИИ</h3><p>${p.ai}</p>${p.aiTags.map(x=>`<span class="tag">${x}</span>`).join('')}</div>
+ </div>
+ <div class="card" style="margin-top:18px"><h3>Лексический профиль</h3>
+ ${bar("Эмоциональная лексика",h.emotion,a.emotion)}
+ ${bar("Цветовая лексика",h.color,a.color)}
+ ${bar("Контекстная лексика",h.context,a.context)}
+ ${bar("Предметная лексика",h.object,a.object)}
+ ${bar("Прилагательные",h.adjectives,a.adjectives)}
+ ${bar("Глаголы",h.verbs,a.verbs)}
+ <p class="small">Подсчёт демонстрационный: категории заданы словарями продукта и простыми морфологическими эвристиками. Для научной публикации рекомендуется ручная разметка и проверка нескольких кодировщиков.</p>
+ </div>`;
+}
+
+let blindIndex=0;
+const blindSet=[
+ {text:data[0].human,type:"human",why:"Текст использует эмоциональные и интерпретационные слова: «тревожное настроение», «внутренний конфликт», «эмоциональное состояние»."},
+ {text:data[1].ai,type:"ai",why:"Описание сосредоточено на наблюдаемых элементах: формы, палитра, повтор, композиция и поп-культура."},
+ {text:data[3].human,type:"human",why:"Есть психологическая интерпретация: «ожидание», «одиночество», «меланхолия»."},
+ {text:data[5].ai,type:"ai",why:"Основной фокус — объекты и визуальные признаки: бассейн, архитектура, вода, цветовые области."}
+];
+function newBlind(){
+ blindIndex=Math.floor(Math.random()*blindSet.length);
+ document.getElementById('blindText').textContent=blindSet[blindIndex].text;
+ document.getElementById('blindResult').innerHTML='';
+}
+function guess(type){
+ const x=blindSet[blindIndex];
+ const ok=x.type===type;
+ document.getElementById('blindResult').innerHTML=`<div class="result"><b>${ok?'Верно.':'Не угадано.'}</b> Это ${x.type==='human'?'описание человека':'описание ИИ'}.<br><span class="small">${x.why}</span></div>`;
+}
+function analyzeText(){
+ const t=document.getElementById('userText').value.trim();
+ if(!t){document.getElementById('analysisResult').innerHTML='<div class="result">Сначала вставьте текст.</div>';return}
+ const p=profile(t);
+ const density=(n)=>Math.round(n/p.total*100);
+ document.getElementById('analysisResult').innerHTML=`<div class="card">
+ <h3>Результат</h3>
+ <p><b>Всего слов:</b> ${p.total}</p>
+ <table>
+ <tr><th>Категория</th><th>Количество</th><th>Доля</th></tr>
+ <tr><td>Эмоциональная лексика</td><td>${p.emotion}</td><td>${density(p.emotion)}%</td></tr>
+ <tr><td>Цветовая лексика</td><td>${p.color}</td><td>${density(p.color)}%</td></tr>
+ <tr><td>Контекстная лексика</td><td>${p.context}</td><td>${density(p.context)}%</td></tr>
+ <tr><td>Предметная лексика</td><td>${p.object}</td><td>${density(p.object)}%</td></tr>
+ <tr><td>Прилагательные*</td><td>${p.adjectives}</td><td>${density(p.adjectives)}%</td></tr>
+ <tr><td>Глаголы*</td><td>${p.verbs}</td><td>${density(p.verbs)}%</td></tr>
+ </table>
+ <p class="small">* Прилагательные и глаголы определяются упрощёнными окончаниями, поэтому показатель ориентировочный.</p>
+ </div>`;
+}
+document.querySelectorAll('nav button').forEach(btn=>btn.onclick=()=>document.getElementById(btn.dataset.target).scrollIntoView({behavior:'smooth'}));
+makeCards();setupSelect();newBlind();
+</script>
+</body>
+</html>
